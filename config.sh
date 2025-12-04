@@ -1,6 +1,9 @@
 SYSTEM_HEADER_PROJECTS="libc kernel"
 PROJECTS="libc kernel"
 
+export PREFIX="$HOME/opt/cross"
+export PATH="$PREFIX/bin:$PATH"
+
 export MAKE=${MAKE:-make}
 export HOST=${HOST:-$(./default-host.sh)}
 
