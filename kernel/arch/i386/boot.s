@@ -27,7 +27,12 @@ _start:
 	movl $stack_top, %esp
 
 	# Call the global constructors.
-	call _init
+	# call _init
+
+	#
+	# THIS WAS CAUSING ISSUES
+	# CALL INIT IT BROKEN FOR CPP
+	#
 
 	# Transfer control to the main kernel.
 	call kernel_main
