@@ -69,7 +69,7 @@ void terminal_initialize(void)
 {
 	terminal_row = 0;
 	terminal_column = 0;
-	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
+	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_BLUE, VGA_COLOR_BLACK);
 	
 	for (size_t y = 0; y < VGA_HEIGHT; y++) {
 		for (size_t x = 0; x < VGA_WIDTH; x++) {
@@ -90,14 +90,34 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
 	terminal_buffer[index] = vga_entry(c, color);
 }
 
+void terminal_scroll(void) {
+    for (size_t y = 0; y < VGA_HEIGHT - 1; y++) {
+        for (size_t x = 0; x < VGA_WIDTH; x++) {
+            terminal_buffer[y * VGA_WIDTH + x] = terminal_buffer[(y + 1)* VGA_WIDTH + x];
+        }
+    }
+    for (size_t x = 0; x < VGA_WIDTH; x++) {
+        terminal_buffer[(VGA_HEIGHT - 1) * VGA_WIDTH + x] = vga_entry(' ', terminal_color);
+    }
+    terminal_row = VGA_HEIGHT - 1;
+}
+
 void terminal_putchar(char c) 
 {
-	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
-	if (++terminal_column == VGA_WIDTH) {
-		terminal_column = 0;
-		if (++terminal_row == VGA_HEIGHT)
-			terminal_row = 0;
-	}
+    if (c == '\n') {
+        terminal_column = 0;
+        terminal_row++;
+    } else {
+	    terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+        if (++terminal_column == VGA_WIDTH) {
+		    terminal_column = 0;
+            terminal_row++;
+        }
+    }
+    if (terminal_row == VGA_HEIGHT){
+        terminal_row = 0;
+        terminal_scroll();
+    }
 }
 
 void terminal_write(const char* data, size_t size) 
@@ -116,6 +136,45 @@ void kernel_main(void)
 	/* Initialize terminal interface */
 	terminal_initialize();
 
-	/* Newline support is left as an exercise. */
-	terminal_writestring("Hello, kernel World!\n");
+	terminal_writestring("Hello, kernel World!1\n");
+	terminal_writestring("Hello, kernel World!2\n");
+	terminal_writestring("Hello, kernel World!3\n");
+	terminal_writestring("Hello, kernel World!4\n");
+	terminal_writestring("Hello, kernel World!5\n");
+	terminal_writestring("Hello, kernel World!6\n");
+	terminal_writestring("Hello, kernel World!7\n");
+	terminal_writestring("Hello, kernel World!8\n");
+	terminal_writestring("Hello, kernel World!9\n");
+	terminal_writestring("Hello, kernel World!10\n");
+    terminal_writestring("Hello, kernel World!11\n");
+    terminal_writestring("Hello, kernel World!12\n");
+    terminal_writestring("Hello, kernel World!13\n");
+	terminal_writestring("Hello, kernel World!14\n");
+	terminal_writestring("Hello, kernel World!15\n");
+	terminal_writestring("Hello, kernel World!16\n");
+	terminal_writestring("Hello, kernel World!17\n");
+	terminal_writestring("Hello, kernel World!18\n");
+	terminal_writestring("Hello, kernel World!19\n");
+	terminal_writestring("Hello, kernel World!20\n");
+	terminal_writestring("Hello, kernel World!21\n");
+	terminal_writestring("Hello, kernel World!22\n");
+	terminal_writestring("Hello, kernel World!23\n");
+	terminal_writestring("Hello, kernel World!24\n");
+	terminal_writestring("Hello, kernel World!25\n");
+    terminal_writestring("Hello, kernel World!26\n");
+	terminal_writestring("Hello, kernel World!27\n");
+	terminal_writestring("Hello, kernel World!28\n");
+	terminal_writestring("Hello, kernel World!29\n");
+	terminal_writestring("Hello, kernel World!30\n");
+	terminal_writestring("Hello, kernel World!31\n");
+	terminal_writestring("Hello, kernel World!32\n");
+	terminal_writestring("Hello, kernel World!33\n");
+	terminal_writestring("Hello, kernel World!34\n");
+	terminal_writestring("Hello, kernel World!35\n");
+	terminal_writestring("Hello, kernel World!36\n");
+	terminal_writestring("Hello, kernel World!37\n");
+	terminal_writestring("Hello, kernel World!38\n");
+	terminal_writestring("Hello, kernel World!39\n");
+	terminal_writestring("Hello, kernel World!40\n");
+    
 }
