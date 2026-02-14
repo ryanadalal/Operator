@@ -10,4 +10,3 @@ then https://wiki.osdev.org/Meaty_Skeleton
 
 completed bare bones
 _init for cpp not working
-vars disappeared from path and no longer working
