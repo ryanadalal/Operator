@@ -16,6 +16,9 @@ static size_t terminal_column;
 static uint8_t terminal_color;
 static uint16_t* terminal_buffer;
 
+/*
+initial the terminal by clearing the screen and setting the cursor to the top left corner
+*/
 void terminal_initialize(void) {
 	terminal_row = 0;
 	terminal_column = 0;
