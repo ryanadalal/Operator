@@ -4,6 +4,14 @@
 
 #include <string.h>
 
+/*
+* copy [size] bytes from memory area [srcptr] to memory area [dstptr]
+* notes - source and destination regions must not overlap
+* @param dstptr the destination memory area to copy to
+* @param srcptr the source memory area to copy from
+* @param size the number of bytes to copy
+* @returns a pointer to the destination memory area [dstptr]
+*/
 void* memcpy(void* restrict dstptr, const void* restrict srcptr, size_t size) {
 	unsigned char* dst = (unsigned char*) dstptr;
 	const unsigned char* src = (const unsigned char*) srcptr;
