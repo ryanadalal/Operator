@@ -17,7 +17,7 @@ static uint8_t terminal_color;
 static uint16_t* terminal_buffer;
 
 /*
-initial the terminal by clearing the screen and setting the cursor to the top left corner
+* initial the terminal: clear screen & set cursor to (0, 0)
 */
 void terminal_initialize(void) {
 	terminal_row = 0;
@@ -32,16 +32,30 @@ void terminal_initialize(void) {
 	}
 }
 
+/*
+* set the terminal color
+* @param - color: the color to be set
+*/
 void terminal_setcolor(uint8_t color) {
 	terminal_color = color;
 }
 
+/*
+* put a character with color at (x, y)
+* @param c the character to be put
+* @param color the color of the character
+* @param x the column of the character
+* @param y the row of the character
+*/
 void terminal_putentryat(unsigned char c, uint8_t color, size_t x, size_t y) {
 	const size_t index = y * VGA_WIDTH + x;
 	terminal_buffer[index] = vga_entry(c, color);
 }
 
-
+/*
+* scroll the terminal up by one line
+* @param line the line to be scrolled up
+*/
 void terminal_scroll(int line) {
 	char c;
     int loop;
@@ -50,6 +64,10 @@ void terminal_scroll(int line) {
 		*(char *)(loop - (VGA_WIDTH * 2)) = c;
 	}
 }
+
+/*
+* clear the last line of the terminal
+*/
 void terminal_delete_last_line() {
 	int x, *ptr;
 
@@ -59,6 +77,10 @@ void terminal_delete_last_line() {
 	}
 }
 
+/*
+* put a character on the terminal
+* @param c the character to be put
+*/
 void terminal_putchar(char c) {
 	size_t line;
 	unsigned char uc = c;
@@ -84,11 +106,20 @@ void terminal_putchar(char c) {
 	}
 }
 
+/*
+* write a string of given size to the terminal
+* @param data the string to be written
+* @param size the size of the string to be written
+*/
 void terminal_write(const char* data, size_t size) {
 	for (size_t i = 0; i < size; i++)
 		terminal_putchar(data[i]);
 }
 
+/* 
+* write a null-terminated string to the terminal
+* @param data the string to be written
+*/
 void terminal_writestring(const char* data) {
 	terminal_write(data, strlen(data));
 }

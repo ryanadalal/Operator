@@ -4,6 +4,12 @@
 #include <stdio.h>
 #include <string.h>
 
+/*
+* write a string to stdout
+* @param data the string to be written
+* @param length the length of the string to be written
+* @returns true on success, false on error
+*/
 static bool print(const char* data, size_t length) {
 	const unsigned char* bytes = (const unsigned char*) data;
 	for (size_t i = 0; i < length; i++)
@@ -12,6 +18,12 @@ static bool print(const char* data, size_t length) {
 	return true;
 }
 
+/* 
+* write a formatted string to stdout
+* @param format the format string
+* @param ... the arguments to be formatted
+* @returns the number of characters written on success, a negative number on error
+*/
 int printf(const char* restrict format, ...) {
 	va_list parameters;
 	va_start(parameters, format);
