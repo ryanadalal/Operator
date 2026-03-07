@@ -2,15 +2,23 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-#include "gdt.h"
+#include <kernel/gdt.h>
+#include <kernel/tty.h>
 
 extern void setGdt(uint16_t limit, uint32_t base);
 extern void reloadSegments(void);
 
+// Define the GDT array
+struct GDT gdt[5];
+
+// Forward declaration
+void encodeGdtEntry(uint8_t *target, struct GDT source);
+
+
 void gdt_install() {
     gdt[0] = (struct GDT){0};          // Null segment
-    gdt[1] = (struct GDT){.base = 0, .limit = 0xFFFFF, .access = 0x9A, .granularity = 0xC}; // Code segment
-    gdt[2] = (struct GDT){.base = 0, .limit = 0xFFFFF, .access = 0x92, .granularity = 0xC}; // Data segment
+    gdt[1] = (struct GDT){.base = 0, .limit = 0xFFFFF, .access = 0x9A, .granularity = 0xC}; // Kernel Code segment
+    gdt[2] = (struct GDT){.base = 0, .limit = 0xFFFFF, .access = 0x92, .granularity = 0xC}; // Kernel Data segment
     gdt[3] = (struct GDT){.base = 0, .limit = 0xFFFFF, .access = 0xFA, .granularity = 0xC}; // User mode code segment
     gdt[4] = (struct GDT){.base = 0, .limit = 0xFFFFF, .access = 0xF2, .granularity = 0xC}; // User mode data segment
     // gdt[5] = (struct GDT){.base = 0, .limit = 0xFFFFF, .access = 0x89, .granularity = 0x0}; // TSS segment
@@ -28,7 +36,9 @@ void gdt_install() {
 void encodeGdtEntry(uint8_t *target, struct GDT source)
 {
     // Check the limit to make sure that it can be encoded
-    if (source.limit > 0xFFFFF) {kerror("GDT cannot encode limits larger than 0xFFFFF");}
+    if (source.limit > 0xFFFFF) {
+        kerror("GDT cannot encode limits larger than 0xFFFFF");
+    }
     
     // Encode the limit
     target[0] = source.limit & 0xFF;

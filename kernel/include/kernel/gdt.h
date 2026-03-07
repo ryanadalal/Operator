@@ -6,7 +6,7 @@
 
 // Structure for a GDT entry
 struct GDT {
-    uint16_t limit;
+    uint32_t limit;
     uint32_t base;
     uint8_t  access;
     uint8_t  granularity;

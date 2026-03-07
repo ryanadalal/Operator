@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
 
 #include <kernel/tty.h>
 
@@ -121,4 +122,12 @@ void terminal_write(const char* data, size_t size) {
 */
 void terminal_writestring(const char* data) {
 	terminal_write(data, strlen(data));
+}
+
+/*
+* Print a kernel error message
+* @param msg the error message to display
+*/
+void kerror(const char *msg) {
+	printf("KERNEL ERROR: %s\n", msg);
 }
