@@ -1,6 +1,6 @@
-DEFAULT_HOST!=../default-host.sh
-HOST?=DEFAULT_HOST
-HOSTARCH!=../target-triplet-to-arch.sh $(HOST)
+DEFAULT_HOST:=$(shell ../default-host.sh)
+HOST?=$(DEFAULT_HOST)
+HOSTARCH:=$(shell ../target-triplet-to-arch.sh $(HOST))
 
 CFLAGS?=-O2 -g
 CPPFLAGS?=
@@ -30,6 +30,9 @@ LIBS:=$(LIBS) $(KERNEL_ARCH_LIBS)
 KERNEL_OBJS=\
 $(KERNEL_ARCH_OBJS) \
 kernel/kernel.o \
+kernel/pic.o \
+kernel/isr.o \
+kernel/interrupts.o
 
 OBJS=\
 $(ARCHDIR)/crti.o \

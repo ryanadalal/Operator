@@ -1,9 +1,11 @@
 #include <kernel/tty.h>
 #include <stdio.h>
 #include <kernel/gdt.h>
+#include <kernel/interrupts.h>
 
 void kernel_main() {
     gdt_install();
+    interrupts_init();
 
     terminal_initialize();
     terminal_write("Step 1\n", 7);
@@ -18,4 +20,8 @@ void kernel_main() {
     printf("Hello, Kernel World9!\n");
     printf("Hello, Kernel World0!\n");
 
+
+    while (1) {
+        __asm__ __volatile__("hlt");
+    }
 }
