@@ -1,6 +1,4 @@
-// gdt.h
-#ifndef GDT_H
-#define GDT_H
+#pragma once
 
 #include <stdint.h>
 
@@ -17,5 +15,3 @@ extern struct GDT gdt[5];
 
 // Function prototypes
 void gdt_install(void);  // calls setGdt + reloadSegments in assembly
-
-#endif

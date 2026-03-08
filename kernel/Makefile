@@ -32,7 +32,8 @@ $(KERNEL_ARCH_OBJS) \
 kernel/kernel.o \
 kernel/pic.o \
 kernel/isr.o \
-kernel/interrupts.o
+kernel/interrupts.o \
+kernel/keyboard.o
 
 OBJS=\
 $(ARCHDIR)/crti.o \

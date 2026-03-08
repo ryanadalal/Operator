@@ -23,7 +23,7 @@ void gdt_install() {
     gdt[4] = (struct GDT){.base = 0, .limit = 0xFFFFF, .access = 0xF2, .granularity = 0xC}; // User mode data segment
     // gdt[5] = (struct GDT){.base = 0, .limit = 0xFFFFF, .access = 0x89, .granularity = 0x0}; // TSS segment
 
-    uint8_t gdt_entries[5][8]; // raw entries sent to CPU
+    static uint8_t gdt_entries[5][8]; // raw entries sent to CPU
 
     for(int i = 0; i < 5; i++) {
         encodeGdtEntry(gdt_entries[i], gdt[i]);

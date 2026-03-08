@@ -1,6 +1,6 @@
 .section .text
-  .extern isr_handler    # C handler for CPU exceptions
-  .extern irq_handler    # C handler for IRQs
+.extern isr_handler    # C handler for CPU exceptions
+.extern irq_handler    # C handler for IRQs
 
 .macro ISR_NOERR num
     .globl isr\num
@@ -19,8 +19,10 @@ isr\num:
 
     push $0                  # fake error code
     push $\num               # interrupt number
+    mov %esp, %eax          # eax = pointer to regs structure on stack
+    push %eax               # push as first argument to isr_handler
     call isr_handler
-    add $8, %esp             # clean up stack
+    add $12, %esp           # pop: argument (4) + int_no (4) + err_code (4)
 
     pop %gs
     pop %fs
@@ -49,14 +51,17 @@ isr\num:
     mov %ax, %gs
 
     push $\num               # interrupt number
+    mov %esp, %eax          # eax = pointer to regs structure
+    push %eax               # push as first argument
     call isr_handler
-    add $4, %esp             # clean up stack (CPU already pushed error code)
+    add $8, %esp            # pop argument and int_no (error code left on stack by CPU)
 
     pop %gs
     pop %fs
     pop %es
     pop %ds
     popal
+    add $4, %esp            # skip error code on stack
     iret
 .endm
 
@@ -78,9 +83,12 @@ irq\num:
     mov %ax, %fs
     mov %ax, %gs
 
-    push $\num
+    push $0                 # fake error code (for consistency with struct regs)
+    push $(32 + \num)       # interrupt number (IRQ0 = INT 32, etc.)
+    mov %esp, %eax          # eax = pointer to regs structure
+    push %eax               # push as first argument
     call irq_handler
-    add $4, %esp             # clean up stack
+    add $12, %esp           # pop argument (4) + int_no (4) + err_code (4)
 
     pop %gs
     pop %fs
@@ -184,3 +192,22 @@ isr_stub_table:
     .long isr29
     .long isr30
     .long isr31
+
+.global irq_stub_table
+irq_stub_table:
+    .long irq0
+    .long irq1
+    .long irq2
+    .long irq3
+    .long irq4
+    .long irq5
+    .long irq6
+    .long irq7
+    .long irq8
+    .long irq9
+    .long irq10
+    .long irq11
+    .long irq12
+    .long irq13
+    .long irq14
+    .long irq15

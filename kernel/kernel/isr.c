@@ -7,10 +7,14 @@
 isr_t interrupt_handlers[256] = {0};
 
 struct regs {
-    uint32_t ds;                  // Data segment selector
-    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; // pusha
-    uint32_t int_no, err_code;    // interrupt number + error code
-    uint32_t eip, cs, eflags, useresp, ss; // pushed by CPU automatically
+    // Pushed LAST by our stubs (so first in memory)
+    uint32_t int_no, err_code;
+    // Segment registers 
+    uint32_t gs, fs, es, ds;
+    // General purpose registers (from pushal - EDI pushed last, EAX first)
+    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
+    // CPU-pushed context (EIP pushed last by CPU)
+    uint32_t eip, cs, eflags, useresp, ss;
 };
 
 // Called by assembly stubs for CPU exceptions
@@ -26,18 +30,14 @@ void isr_handler(struct regs *r) {
 
 // Called by assembly stubs for hardware IRQs
 void irq_handler(struct regs *r) {
-    // Send End Of Interrupt (EOI) to PIC
-    if (r->int_no >= 40) {
-      pic_send_eoi(r->int_no - 40); // slave PIC
-      pic_send_eoi(0); // also notify master
-    } else {
-        pic_send_eoi(r->int_no); // master PIC
-    }
-
-    // Call custom handler if registered
     if (interrupt_handlers[r->int_no]) {
         interrupt_handlers[r->int_no](r);
     }
+
+    // Send End Of Interrupt (EOI) to PIC
+    // r->int_no is 32-47, convert to IRQ 0-15
+    uint8_t irq = r->int_no - 32;
+    pic_send_eoi(irq);
 }
 
 // Allows kernel modules or drivers to register their own handlers

@@ -20,7 +20,7 @@ static uint16_t* terminal_buffer;
 /*
 * initial the terminal: clear screen & set cursor to (0, 0)
 */
-void terminal_initialize(void) {
+void terminal_init(void) {
 	terminal_row = 0;
 	terminal_column = 0;
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);

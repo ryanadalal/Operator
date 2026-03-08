@@ -1,7 +1,7 @@
 .section .text
-  .globl idt_load
-  .extern idtp
-
+.global idt_load
+.type idt_load, @function
 idt_load:
-    lidt [idtp]
+    movl 4(%esp), %eax    # load the pointer to idtp from the stack argument
+    lidt (%eax)           # load IDT - %eax points to the idt_ptr structure
     ret
