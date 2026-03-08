@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include <kernel/pic.h>
+#include <kernel/hardware/pic.h>
 #include "port.h"
 
 #define PIC1_COMMAND 0x20

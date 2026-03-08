@@ -5,7 +5,7 @@
 * @param ic the character to be written, passed as an int but converted to char
 */
 #if defined(__is_libk)
-#include <kernel/tty.h>
+#include <kernel/hardware/tty.h>
 #endif
 int putchar(int ic) {
 #if defined(__is_libk)

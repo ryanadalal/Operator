@@ -1,8 +1,8 @@
 #include <stdint.h>
 #include <stdio.h>
-#include <kernel/isr.h>
-#include <kernel/pic.h>
-#include <kernel/tty.h>
+#include <kernel/core/isr.h>
+#include <kernel/hardware/pic.h>
+#include <kernel/hardware/tty.h>
 
 isr_t interrupt_handlers[256] = {0};
 

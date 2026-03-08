@@ -1,8 +1,8 @@
 #include <stdint.h>
-#include <kernel/pic.h>
-#include <kernel/idt.h>
-#include <kernel/interrupts.h>
-#include <kernel/keyboard.h>
+#include <kernel/hardware/pic.h>
+#include <kernel/core/idt.h>
+#include <kernel/core/interrupts.h>
+#include <kernel/hardware/keyboard.h>
 
 void interrupts_init() {
     pic_remap(0x20, 0x28);

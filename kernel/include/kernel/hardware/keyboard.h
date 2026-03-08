@@ -1,6 +1,6 @@
 #pragma once
 
-#include "isr.h"
+#include "../core/isr.h"
 
 #define KEYBOARD_DATA_PORT 0x60
 

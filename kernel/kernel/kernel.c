@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include <kernel/tty.h>
-#include <kernel/gdt.h>
-#include <kernel/interrupts.h>
+#include <kernel/hardware/tty.h>
+#include <kernel/core/gdt.h>
+#include <kernel/core/interrupts.h>
 
 void kernel_main() {
     terminal_init();

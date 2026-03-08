@@ -1,6 +1,6 @@
-#include <kernel/keyboard.h>
-#include <kernel/isr.h>
-#include <kernel/tty.h>
+#include <kernel/hardware/keyboard.h>
+#include <kernel/core/isr.h>
+#include <kernel/hardware/tty.h>
 #include "port.h"
 
 #define KEY_RELEASE_CODE 0x80

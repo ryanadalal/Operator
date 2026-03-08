@@ -2,8 +2,8 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-#include <kernel/gdt.h>
-#include <kernel/tty.h>
+#include <kernel/core/gdt.h>
+#include <kernel/hardware/tty.h>
 
 extern void setGdt(uint16_t limit, uint32_t base);
 extern void reloadSegments(void);
