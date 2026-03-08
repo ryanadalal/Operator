@@ -33,7 +33,8 @@ kernel/kernel.o \
 kernel/hardware/pic.o \
 kernel/core/isr.o \
 kernel/core/interrupts.o \
-kernel/hardware/keyboard.o
+kernel/hardware/keyboard.o \
+kernel/core/interrupt_handlers/dividebyzero.o \
 
 OBJS=\
 $(ARCHDIR)/crt/crti.o \

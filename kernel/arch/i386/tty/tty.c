@@ -2,7 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-#include <stdio.h>
+#include <stdarg.h>
 
 #include <kernel/hardware/tty.h>
 
@@ -125,9 +125,55 @@ void terminal_writestring(const char* data) {
 }
 
 /*
+* print an integer in hexadecimal format to the terminal
+* @param n the integer to be printed
+*/
+static void print_uint32_hex(uint32_t n) {
+    char hex[9];
+    hex[8] = 0;
+    for(int i = 7; i >= 0; i--) {
+        uint8_t digit = n & 0xF;
+        if(digit < 10) hex[i] = '0' + digit;
+        else hex[i] = 'A' + (digit - 10);
+        n >>= 4;
+    }
+    terminal_writestring(hex);
+}
+
+/*
+* Print a formatted string to the terminal (supports %c, %s, %x)
+* @param fmt the format string
+* @param ... the arguments to be formatted
+*/
+void kprintf(const char* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    for(const char* p = fmt; *p; p++) {
+        if(*p == '%') {
+            p++;
+            if(*p == 'c') {
+                char c = (char) va_arg(args, int);
+                terminal_putchar(c);
+            } else if(*p == 's') {
+                const char* s = va_arg(args, const char*);
+                terminal_writestring(s);
+            } else if(*p == 'x') {
+                uint32_t val = va_arg(args, uint32_t);
+                print_uint32_hex(val);
+            } else if(*p == '%') {
+                terminal_putchar('%');
+            }
+        } else {
+            terminal_putchar(*p);
+        }
+    }
+    va_end(args);
+}
+
+/*
 * Print a kernel error message
 * @param msg the error message to display
 */
 void kerror(const char *msg) {
-	printf("KERNEL ERROR: %s\n", msg);
+	kprintf("KERNEL ERROR: %s\n", msg);
 }

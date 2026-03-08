@@ -1,21 +1,9 @@
 #include <stdint.h>
-#include <stdio.h>
 #include <kernel/core/isr.h>
 #include <kernel/hardware/pic.h>
 #include <kernel/hardware/tty.h>
 
 isr_t interrupt_handlers[256] = {0};
-
-struct regs {
-    // Pushed LAST by our stubs (so first in memory)
-    uint32_t int_no, err_code;
-    // Segment registers 
-    uint32_t gs, fs, es, ds;
-    // General purpose registers (from pushal - EDI pushed last, EAX first)
-    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-    // CPU-pushed context (EIP pushed last by CPU)
-    uint32_t eip, cs, eflags, useresp, ss;
-};
 
 // Called by assembly stubs for CPU exceptions
 void isr_handler(struct regs *r) {
@@ -23,7 +11,7 @@ void isr_handler(struct regs *r) {
         interrupt_handlers[r->int_no](r);  // call custom handler
     } else {
         // Default: print exception info and halt
-        printf("Unhandled exception: %d\n", r->int_no);
+        kprintf("Unhandled exception: %d\n", r->int_no);
         while (1) { __asm__ __volatile__("hlt"); } // halt CPU
     }
 }

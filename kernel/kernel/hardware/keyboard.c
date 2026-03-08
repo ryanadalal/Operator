@@ -27,6 +27,12 @@ void keyboard_handler(struct regs *r) {
       terminal_putchar(c);
     }
   }
+  
+  __asm__ __volatile__(
+        "xor %eax, %eax\n"
+        "mov $10, %ebx\n"
+        "div %eax\n"
+  );
 }
 
 // register the keyboard handler
